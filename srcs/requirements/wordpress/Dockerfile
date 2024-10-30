@@ -2,7 +2,7 @@ FROM alpine:3.19
 
 RUN apk update && apk upgrade
 
-RUN apk add --no-cache wget nginx php php-fpm php-mysqli php-phar mariadb-client php-opcache php-curl
+RUN apk add --no-cache wget nginx php php-fpm php-mysqli php-phar php-mbstring mariadb-client php-opcache php-curl
 
 # RUN wget https://fr.wordpress.org/wordpress-6.6-fr_FR.tar.gz -P /var/www
 
@@ -14,12 +14,13 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
 #COPY wp-su.sh /bin/wp
 #RUN chmod +x /bin/wp-cli.phar /bin/wp
 RUN chmod +x wp-cli.phar
-RUN mv wp-cli.phar /usr/local/bin/wp
+#RUN mv wp-cli.phar /usr/local/bin/wp
 
 COPY tools/www.conf /etc/php82/php-fpm.d/www.conf
 COPY tools/config.sh config.sh
-#CMD [ "chmod", "+x", "config.sh", "&&", "./config.sh" ]
-CMD chmod +x config.sh && ./config.sh
+RUN chmod +x config.sh
+CMD [ "./config.sh" ]
+#CMD chmod +x config.sh && ./config.sh
 #RUN wp core download
 #RUN wp config create --dbname=wordpress --dbuser=user --dbpass=password --dbhost=mariadb --dbprefix=wp_
 #RUN wp core install --url=yourdomain.com --title=Site_Title --admin_user=admin_username --admin_password=admin_password --admin_email=your@email.com

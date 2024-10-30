@@ -8,6 +8,7 @@ COPY tools/my.cnf.d /etc/my.cnf
 RUN mkdir -p /run/mysqld/ /var/lib/mysql
 RUN chown -R mysql:mysql /run/mysqld
 RUN chown -R mysql:mysql /var/lib/mysql
+RUN chmod +x init.sh
 
-CMD [ "chmod", "+x", "init.sh", "&&", "./init.sh;" ]
+CMD [ "./init.sh" ]
 #CMD chmod +x init.sh && ./init.sh

@@ -24,14 +24,14 @@ build:
 	docker compose -f $(NAME) build
 
 up:
-	docker compose -f $(NAME) up -d
+	docker compose -f $(NAME) up --build
 
 down:
 	docker compose -f $(NAME) down
 
 clean: down
-	$(RM) -r $(DATA)/mariadb && mkdir $(DATA)/mariadb
-	$(RM) -r $(DATA)/wordpress && mkdir $(DATA)/wordpress
+	sudo $(RM) -r $(DATA)/mariadb && sudo mkdir $(DATA)/mariadb
+	sudo $(RM) -r $(DATA)/wordpress && sudo mkdir $(DATA)/wordpress
 
 fclean: clean
 	docker volume rm inception_mariadb
