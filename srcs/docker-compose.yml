@@ -1,0 +1,84 @@
+name: inception
+
+services:
+  nginx:
+    image: nginx:alpine3.19
+    build: requirements/nginx
+    depends_on:
+      - wordpress
+    container_name: nginx
+    restart: always
+    volumes:
+      # - /home/${LOGIN}/Inception/srcs/${SSL_CERTIFICATE}:/etc/nginx/${SSL_CERTIFICATE}
+      # - /home/${LOGIN}/Inception/srcs/${SSL_KEY}:/etc/nginx/${SSL_KEY}
+      # - /home/${LOGIN}/Inception/srcs/requirements/nginx/tools/default.conf.template:/etc/nginx/templates/default.conf.template
+      - wordpress:/var/www/html
+    env_file:
+      - .env
+    environment:
+      DOMAIN_NAME: ${DOMAIN_NAME}
+      SSL_CERTIFICATE: ${SSL_CERTIFICATE}
+      SSL_KEY: ${SSL_KEY}
+    ports:
+      - "443:443"
+    networks:
+      - inception-network
+  wordpress:
+    image: wordpress:6.6-php8.3-fpm-alpine
+    build: requirements/wordpress
+    depends_on:
+      - mariadb
+    container_name: wordpress
+    restart: always
+    volumes:
+      - wordpress:/var/www/html
+    env_file:
+      - .env
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - inception-network
+    expose:
+      - "9000"
+  mariadb:
+    image: mariadb:11.4
+    build: requirements/mariadb
+    #dockerfile: Dockerfile
+    container_name: mariadb
+    restart: always
+    volumes:
+      #- /home/${LOGIN}/Inception/srcs/requirements/mariadb/tools/init.sh:/docker-entrypoint-initdb.d/init.sh:ro
+      - mariadb:/var/lib/mysql
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - inception-network
+    expose:
+      - "3306"
+
+networks:
+  inception-network:
+    name: inception-network
+    driver: bridge
+
+volumes:
+  wordpress:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: "/home/${LOGIN}/data/wordpress"
+  mariadb:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: "/home/${LOGIN}/data/mariadb"
