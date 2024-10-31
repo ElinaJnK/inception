@@ -8,13 +8,15 @@ RUN apk upgrade --update-cache --available && \
     apk add openssl && \
     rm -rf /var/cache/apk/*
 
-RUN openssl req -x509 -nodes -out /etc/nginx/ssl/www.${DOMAIN_NAME}.crt -keyout /etc/nginx/ssl/www.${DOMAIN_NAME}.key -subj "/C=FR/ST=IDF/L=Paris/O=42/OU=42/CN=login.42.fr/UID=login"
+# p-e mettre dans ssl
+RUN openssl req -x509 -nodes -out /etc/nginx/inception.crt -keyout /etc/nginx/inception.key -subj "/C=FR/ST=IDF/L=Paris/O=42/OU=42/CN=login.42.fr/UID=login"
 
 RUN mkdir -p /var/run/nginx
 
-COPY tools/default.conf.template /etc/nginx/nginx.conf
+COPY tools/nginx.conf /etc/nginx/nginx.conf
 
-# RUN chmod 755 /var/www/html
-# RUN chown -R www-data:www-data /var/www/html
+#RUN mkdir -p /var/www/html
+#RUN chmod 755 /var/www/html
+#RUN chown -R ejankovs /var/www/html
 
-# CMD [ "nginx", "-g", "daemon off;" ]
+CMD [ "nginx", "-g", "daemon off;" ]

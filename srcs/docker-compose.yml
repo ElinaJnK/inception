@@ -9,9 +9,9 @@ services:
     container_name: nginx
     restart: always
     volumes:
-      - /home/${LOGIN}/Inception/srcs/${SSL_CERTIFICATE}:/etc/nginx/${SSL_CERTIFICATE}
-      - /home/${LOGIN}/Inception/srcs/${SSL_KEY}:/etc/nginx/${SSL_KEY}
-      - /home/${LOGIN}/Inception/srcs/requirements/nginx/tools/default.conf.template:/etc/nginx/templates/default.conf.template
+      # - /home/${LOGIN}/Inception/srcs/${SSL_CERTIFICATE}:/etc/nginx/${SSL_CERTIFICATE}
+      # - /home/${LOGIN}/Inception/srcs/${SSL_KEY}:/etc/nginx/${SSL_KEY}
+      # - /home/${LOGIN}/Inception/srcs/requirements/nginx/tools/default.conf.template:/etc/nginx/templates/default.conf.template
       - wordpress:/var/www/html
     env_file:
       - .env

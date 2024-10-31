@@ -14,11 +14,12 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
 #COPY wp-su.sh /bin/wp
 #RUN chmod +x /bin/wp-cli.phar /bin/wp
 RUN chmod +x wp-cli.phar
-#RUN mv wp-cli.phar /usr/local/bin/wp
+RUN mv wp-cli.phar /usr/local/bin/wp-cli.phar
 
 COPY tools/www.conf /etc/php82/php-fpm.d/www.conf
 COPY tools/config.sh config.sh
 RUN chmod +x config.sh
+#RUN chmod 755 /var/www/html
 CMD [ "./config.sh" ]
 #CMD chmod +x config.sh && ./config.sh
 #RUN wp core download
