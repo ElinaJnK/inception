@@ -12,3 +12,5 @@ RUN chmod +x init.sh
 
 CMD [ "./init.sh" ]
 #CMD chmod +x init.sh && ./init.sh
+
+# HEALTHCHECK --interval=5s --timeout=3s CMD perl mariadb-test-run.pl

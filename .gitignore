@@ -1,0 +1,6 @@
+*.ca
+*.crt
+*.key
+data/
+inception-venv/
+secrets/

@@ -2,7 +2,7 @@ name: inception
 
 services:
   nginx:
-    image: nginx:alpine3.19
+    # image: nginx:alpine3.19
     build: requirements/nginx
     depends_on:
       - wordpress
@@ -24,7 +24,7 @@ services:
     networks:
       - inception-network
   wordpress:
-    image: wordpress:6.6-php8.3-fpm-alpine
+    # image: wordpress:6.6-php8.3-fpm-alpine
     build: requirements/wordpress
     depends_on:
       - mariadb
@@ -38,13 +38,19 @@ services:
       WORDPRESS_DB_HOST: mariadb
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
       WORDPRESS_DB_USER: ${MYSQL_USER}
-      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_PASSWORD: /run/secrets/wordpress_db_pass
+      WORDPRESS_ADMIN_PASS: /run/secrets/admin_pass
+      MYSQL_PASSWORD: /run/secrets/mysql_password
     networks:
       - inception-network
     expose:
       - "9000"
+    secrets:
+      - wordpress_db_pass
+      - admin_pass
+      - mysql_password
   mariadb:
-    image: mariadb #:11.4
+    # image: mariadb:11.4
     build: requirements/mariadb
     #dockerfile: Dockerfile
     container_name: mariadb
@@ -55,29 +61,42 @@ services:
     env_file:
       - .env
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: /run/secrets/mysql_root_pass
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PASSWORD: /run/secrets/mysql_password
     networks:
       - inception-network
     expose:
       - "3306"
+    secrets:
+      - mysql_password
+      - mysql_root_pass
 
 networks:
   inception-network:
     name: inception-network
     driver: bridge
 
+secrets:
+  admin_pass:
+    file: ${SECRETS_PATH}/admin_pass.txt 
+  mysql_password:
+    file: ${SECRETS_PATH}/mysql_password.txt
+  wordpress_db_pass:
+    file: ${SECRETS_PATH}/wordpress_db_pass.txt
+  mysql_root_pass:
+    file: ${SECRETS_PATH}/mysql_root_pass.txt
+
 volumes:
   wordpress:
-    driver: local
+    # driver: local
     driver_opts:
       o: bind
       type: none
       device: "/home/${LOGIN}/data/wordpress"
   mariadb:
-    driver: local
+    # driver: local
     driver_opts:
       o: bind
       type: none
