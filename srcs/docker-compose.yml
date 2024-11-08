@@ -41,12 +41,14 @@ services:
       WORDPRESS_DB_PASSWORD: /run/secrets/wordpress_db_pass
       WORDPRESS_ADMIN_PASS: /run/secrets/admin_pass
       MYSQL_PASSWORD: /run/secrets/mysql_password
+      WORDPRESS_USER_PASS: /run/secrets/wordpress_user_pass
     networks:
       - inception-network
     expose:
       - "9000"
     secrets:
       - wordpress_db_pass
+      - wordpress_user_pass
       - admin_pass
       - mysql_password
   mariadb:
@@ -85,6 +87,8 @@ secrets:
     file: ${SECRETS_PATH}/mysql_password.txt
   wordpress_db_pass:
     file: ${SECRETS_PATH}/wordpress_db_pass.txt
+  wordpress_user_pass:
+    file: ${SECRETS_PATH}/wordpress_user_pass.txt
   mysql_root_pass:
     file: ${SECRETS_PATH}/mysql_root_pass.txt
 
