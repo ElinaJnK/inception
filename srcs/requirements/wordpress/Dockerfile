@@ -1,5 +1,7 @@
 FROM alpine:3.19
 
+# HEALTHCHECK --interval=5s --timeout=3s CMD perl mariadb-test-run.pl
+
 RUN apk update && apk upgrade
 
 RUN apk add --no-cache wget nginx php php-fpm php-mysqli php-phar php-mbstring mariadb-client php-opcache php-curl
