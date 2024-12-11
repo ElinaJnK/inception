@@ -22,7 +22,7 @@ COPY tools/www.conf /etc/php82/php-fpm.d/www.conf
 COPY tools/config.sh config.sh
 RUN chmod +x config.sh
 #RUN chmod 755 /var/www/html
-CMD [ "./config.sh" ]
+CMD [ "./docker-entrypoint.sh" ]
 #CMD chmod +x config.sh && ./config.sh
 #RUN wp core download
 #RUN wp config create --dbname=wordpress --dbuser=user --dbpass=password --dbhost=mariadb --dbprefix=wp_
