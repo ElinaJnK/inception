@@ -4,7 +4,7 @@ FROM alpine:3.19
 
 RUN apk update && apk upgrade
 
-RUN apk add --no-cache wget nginx php php-fpm php-mysqli php-phar php-mbstring mariadb-client php-opcache php-curl
+RUN apk add --no-cache wget php php-fpm php-mysqli php-phar php-mbstring mariadb-client php-opcache php-curl
 
 # RUN wget https://fr.wordpress.org/wordpress-6.6-fr_FR.tar.gz -P /var/www
 
