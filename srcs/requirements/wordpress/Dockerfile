@@ -19,8 +19,8 @@ RUN chmod +x wp-cli.phar
 RUN mv wp-cli.phar /usr/local/bin/wp-cli.phar
 
 COPY tools/www.conf /etc/php82/php-fpm.d/www.conf
-COPY tools/config.sh config.sh
-RUN chmod +x config.sh
+COPY tools/docker-entrypoint.sh docker-entrypoint.sh
+RUN chmod +x docker-entrypoint.sh
 #RUN chmod 755 /var/www/html
 CMD [ "./docker-entrypoint.sh" ]
 #CMD chmod +x config.sh && ./config.sh
